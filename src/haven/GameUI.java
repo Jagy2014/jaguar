@@ -866,7 +866,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
                     }
                 }
             }, 0, 0);
-            add(new MenuButton("rbtn-equ", 5, Resource.getLocString(Resource.l10nLabel, "Equipment ($col[255,255,0]{Ctrl+E})")) {
+            add(new MenuButton("rbtn-equ", 5, Resource.getLocString(Resource.l10nLabel, "Equipment ($col[255,255,0]{Ctrl+E or F1})")) {
                 public void click() {
                     if ((equwnd != null) && equwnd.show(!equwnd.visible)) {
                         equwnd.raise();
@@ -874,7 +874,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
                     }
                 }
             }, 0, 0);
-            add(new MenuButton("rbtn-chr", 20, Resource.getLocString(Resource.l10nLabel, "Character Sheet ($col[255,255,0]{Ctrl+T})")) {
+            add(new MenuButton("rbtn-chr", 20, Resource.getLocString(Resource.l10nLabel, "Character Sheet ($col[255,255,0]{Ctrl+T or F2})")) {
                 public void click() {
                     if ((chrwdg != null) && chrwdg.show(!chrwdg.visible)) {
                         chrwdg.raise();
@@ -882,7 +882,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
                     }
                 }
             }, 0, 0);
-            add(new MenuButton("rbtn-bud", 2, Resource.getLocString(Resource.l10nLabel, "Kith & Kin ($col[255,255,0]{Ctrl+B})")) {
+            add(new MenuButton("rbtn-bud", 2, Resource.getLocString(Resource.l10nLabel, "Kith & Kin ($col[255,255,0]{Ctrl+B or F3})")) {
                 public void click() {
                     if (zerg.show(!zerg.visible)) {
                         zerg.raise();
@@ -891,7 +891,7 @@ public class GameUI extends ConsoleHost implements Console.Directory {
                     }
                 }
             }, 0, 0);
-            add(new MenuButton("rbtn-opt", 15, Resource.getLocString(Resource.l10nLabel, "Options ($col[255,255,0]{Ctrl+O})")) {
+            add(new MenuButton("rbtn-opt", 15, Resource.getLocString(Resource.l10nLabel, "Options ($col[255,255,0]{Ctrl+O or F4})")) {
                 public void click() {
                     if (opts.show(!opts.visible)) {
                         opts.raise();
@@ -1003,6 +1003,30 @@ public class GameUI extends ConsoleHost implements Console.Directory {
             Config.showfarmrad = !Config.showfarmrad;
             Utils.setprefb("showfarmrad", Config.showfarmrad);
             return true;
+        } else if (ev.getKeyCode() == KeyEvent.VK_F1) {
+            if (equwnd.visible)
+            equwnd.hide();
+        else
+            equwnd.show();
+        return true;
+        } else if (ev.getKeyCode() == KeyEvent.VK_F2) {
+            if (chrwdg.visible)
+            chrwdg.hide();
+        else
+            chrwdg.show();
+        return true;
+        } else if (ev.getKeyCode() == KeyEvent.VK_F3) {
+            if (zerg.visible)
+            zerg.hide();
+        else
+            zerg.show();
+        return true;
+        } else if (ev.getKeyCode() == KeyEvent.VK_F4) {
+            if (opts.visible)
+            opts.hide();
+        else
+            opts.show();
+        return true;
         }
 
         return (super.globtype(key, ev));
