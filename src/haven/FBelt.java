@@ -28,7 +28,7 @@ public class FBelt extends Widget implements DTarget, DropTarget {
         if (chrid != "") {
             String[] resnames = Utils.getprefsa("fbelt_" + chrid, null);
             if (resnames != null) {
-                for (int i = 0; i < 12; i++) {
+                for (int i = 4; i < 12; i++) {
                     String resname = resnames[i];
                     if (!resname.equals("null"))
                         belt[i] = Resource.remote().load(resnames[i]);
@@ -41,7 +41,7 @@ public class FBelt extends Widget implements DTarget, DropTarget {
         String chrid = gameui().chrid;
         if (chrid != "") {
             String[] resnames = new String[12];
-            for (int i = 0; i < 12; i++) {
+            for (int i = 4; i < 12; i++) {
                 Indir<Resource> res = belt[i];
                 if (res != null)
                     resnames[i] = res.get().name;
@@ -57,7 +57,7 @@ public class FBelt extends Widget implements DTarget, DropTarget {
     }
 
     private int beltslot(Coord c) {
-        for (int i = 0; i < 12; i++) {
+        for (int i = 4; i < 12; i++) {
             if (c.isect(beltc(i), invsq.sz()))
                 return i;
         }
@@ -66,7 +66,7 @@ public class FBelt extends Widget implements DTarget, DropTarget {
 
     @Override
     public void draw(GOut g) {
-        for (int i = 0; i < 12; i++) {
+        for (int i = 4; i < 12; i++) {
             int slot = i;
             Coord c = beltc(i);
             g.image(invsq, c);
