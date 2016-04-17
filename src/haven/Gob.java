@@ -431,6 +431,11 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
 
     public boolean setup(RenderList rl) {
         loc.tick();
+	    CustomGobInfo info = getattr(CustomGobInfo.class);
+        if (info == null) {
+			info = new CustomGobInfo(this);
+			setattr(info);
+        }
         for (Overlay ol : ols)
             rl.add(ol, null);
         for (Overlay ol : ols) {
@@ -490,31 +495,19 @@ public class Gob implements Sprite.Owner, Skeleton.ModOwner, Rendered {
                 rl.prepc(highlight.getfx());
         }
 
-        Drawable d = getattr(Drawable.class);
-        if (d != null) {
-            boolean hide = false;
-            if (Config.hidegobs) {
-                try {
-                    if (res != null && res.name.startsWith("gfx/terobjs/trees")
-                            && !res.name.endsWith("log") && !res.name.endsWith("oldtrunk")) {
-                        hide = true;
-                        GobHitbox.BBox bbox = GobHitbox.getBBox(this, true);
-                        if (bbox != null) {
-                            rl.add(new Overlay(new GobHitbox(this, bbox.a, bbox.b, true)), null);
-                        }
-                    }
-                } catch (Loading le) {
-                }
-            }
+        if (!info.isHidden()) {
+			Drawable d = info.getReplacement();
+			if (d == null)
+				d = getattr(Drawable.class);
+			if (d != null)
+                d.setup(rl);
 
-            if (Config.showboundingboxes && !hide) {
+            if (Config.showboundingboxes && !info.isHidden()) {
                 GobHitbox.BBox bbox = GobHitbox.getBBox(this, true);
                 if (bbox != null)
-                    rl.add(new Overlay(new GobHitbox(this, bbox.a, bbox.b, false)), null);
+					rl.add(new Overlay(new GobHitbox(this, bbox.a, bbox.b, false)), null);
             }
 
-            if (!hide)
-                d.setup(rl);
 
             if (Config.showplantgrowstage) {
                 if (res != null && res.name.startsWith("gfx/terobjs/plants") && !res.name.endsWith("trellis")) {
