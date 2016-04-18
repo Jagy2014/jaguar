@@ -887,6 +887,18 @@ public class OptWnd extends Window {
                 a = val;
             }
         }, new Coord(0, y));
+        y += 35;
+        display.add(new CheckBox("Mark studied curiosities(Jaguar)") {
+             {
+                a = Config.markstudied;
+             }
+ 
+            public void set(boolean val) {
+                Utils.setprefb("markstudied", val);
+                Config.markstudied = val;
+                a = val;
+            }
+        }, new Coord(0, y));
         // -------------------------------------------- display 2nd column
         y = 0;
         display.add(new CheckBox("Show wear bars") {

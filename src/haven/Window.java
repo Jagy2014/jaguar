@@ -350,4 +350,9 @@ public class Window extends Widget implements DTarget {
     public boolean ismousegrab() {
         return dm != null;
     }
+
+    public boolean isGrabbed() {
+        return dm != null;
+    }
+
 }

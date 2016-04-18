@@ -1,0 +1,1 @@
+Farmer will pick the nearest crop type to harvest and it will farm only found type. Will start from SE to NW corner.

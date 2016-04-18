@@ -55,13 +55,14 @@ public class CharWnd extends Window {
     public final Widget woundbox;
     public final WoundList wounds;
     public Wound.Info wound;
-    private final Tabs.Tab questtab;
+    public final Tabs.Tab questtab;
     public final Widget questbox;
     public final QuestList cqst, dqst;
     public Quest.Info quest;
     public int exp, enc;
     private int scost;
     private final Tabs.Tab sattr, fgt;
+    public StudyInfo inf;
 
     public static class FoodMeter extends Widget {
         public static final Tex frame = Resource.loadtex("gfx/hud/chr/foodm");
@@ -643,6 +644,7 @@ public class CharWnd extends Window {
     public class StudyInfo extends Widget {
         public Widget study;
         public int texp, tw, tenc, tlph;
+        public Set<String> active = new HashSet<>();
         private final Text.UText<?> texpt = new Text.UText<Integer>(Text.std) {
             public Integer value() {
                 return (texp);
@@ -685,8 +687,9 @@ public class CharWnd extends Window {
             add(new Label("Learning points:"), 2, sz.y - 32);
         }
 
-        private void upd() {
+        public void upd() {
             int texp = 0, tw = 0, tenc = 0, tlph = 0;
+            active.clear();
             for (GItem item : study.children(GItem.class)) {
                 try {
                     Curiosity ci = ItemInfo.find(Curiosity.class, item.info());
@@ -694,7 +697,10 @@ public class CharWnd extends Window {
                         texp += ci.exp;
                         tw += ci.mw;
                         tenc += ci.enc;
-
+                        ItemInfo.Name nm = ItemInfo.find(ItemInfo.Name.class, item.info());
+                        if (nm != null) {
+                        active.add(nm.str.text);
+                        }
                         try {
                             Resource res = item.getres();
                             if (res != null) {
@@ -1917,7 +1923,8 @@ public class CharWnd extends Window {
         if (place == "study") {
             sattr.add(child, new Coord(260, 35).add(wbox.btloff()));
             Frame.around(sattr, Collections.singletonList(child));
-            Widget inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
+            inf = sattr.add(new StudyInfo(new Coord(attrw - 150, child.sz.y), child), new Coord(260 + 150, child.c.y).add(wbox.btloff().x, 0));
+            ui.gui.addMeterAt(new AttnMeter(inf), 3, 0);
             sattr.add(new CheckBox("Lock") {
                 {
                     a = Config.studylock;
@@ -1941,6 +1948,7 @@ public class CharWnd extends Window {
                 }
             }, new Coord(460, 10));
             Frame.around(sattr, Collections.singletonList(inf));
+            getparent(GameUI.class).studywnd.setStudy((Inventory)child);
         } else if (place == "fmg") {
             fgt.add(child, 0, 0);
             if (child instanceof FightWnd)

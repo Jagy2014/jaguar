@@ -40,6 +40,9 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
     private GSprite spr;
     private Object[] rawinfo;
     private List<ItemInfo> info = Collections.emptyList();
+    public long finishedTime = -1;
+    public int lmeter1 = -1, lmeter2 = -1, lmeter3 = -1;
+    private long meterTime;
     public static final Color essenceclr = new Color(202, 110, 244);
     public static final Color substanceclr = new Color(208, 189, 44);
     public static final Color vitalityclr = new Color(157, 201, 72);
@@ -249,6 +252,7 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
             rawinfo = args;
         } else if (name == "meter") {
             meter = (Integer) args[0];
+            updateMeter(meter);
             metertex = Text.renderstroked(String.format("%d%%", meter), Color.WHITE, Color.BLACK).tex();
             timelefttex = null;
         }
@@ -301,4 +305,22 @@ public class GItem extends AWidget implements ItemInfo.SpriteOwner, GSprite.Owne
         }
         return null;
     }
+
+    private void updateMeter(int val) {
+    if (val > lmeter1) {
+        lmeter3 = lmeter2;
+        lmeter2 = lmeter1;
+        lmeter1 = val;
+        long prevTime = meterTime;
+        meterTime = System.currentTimeMillis();
+        if (lmeter3 >= 0) {
+        finishedTime = System.currentTimeMillis()+(long)((100.0-lmeter1)*(meterTime - prevTime)/(lmeter1-lmeter2));
+        }
+    } else if (val < lmeter1) {
+        lmeter3 = lmeter2 = -1;
+        lmeter1 = val;
+        meterTime = System.currentTimeMillis();
+        finishedTime = -1;
+   }
+ }
 }

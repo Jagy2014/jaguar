@@ -1,0 +1,1 @@
+A Dragonfly catcher that clicks the nearest dragonfly and tries to catch it. It has some logic for getting unstuck, supports drinking water from hotkeys (waterflask/waterskin/bucket), and it will run until it has a full inventory or is stopped by the user.

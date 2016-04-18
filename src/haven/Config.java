@@ -173,6 +173,9 @@ public class Config {
     public static byte[] authck = null;
     public static String prefspec = "hafen";
     public static String version;
+/*Jaguar*/
+    public static boolean markstudied =Utils.getprefb("markstudied", false);
+
 
     public final static String chatfile = "chatlog.txt";
     public static PrintWriter chatlog = null;
@@ -301,6 +304,22 @@ public class Config {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Coord getStudyPosition() {
+        return Utils.getprefc("haven.study.position", new Coord(100, 100));
+    }
+ 
+    public static void setStudyPosition(Coord value) {
+       Utils.setprefc("haven.study.position", value);
+    }
+ 
+    public static boolean getStudyVisible() {
+        return Utils.getprefb("haven.study.visible", false);
+    }
+ 
+    public static void setStudyVisible(boolean value) {
+        Utils.setprefb("haven.study.visible", value);
     }
 
     private static int getint(String name, int def) {

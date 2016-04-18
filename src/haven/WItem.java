@@ -203,6 +203,9 @@ public class WItem extends Widget implements DTarget {
         }
     }
 
+   private static Tex studyMarkGreen = Text.renderstroked("X", Color.GREEN, Color.RED).tex();
+   private static Tex studyMarkRed = Text.renderstroked("INT", Color.RED, Color.BLACK).tex();
+
     public void draw(GOut g) {
         GSprite spr = item.spr();
         if (spr != null) {
@@ -230,7 +233,21 @@ public class WItem extends Widget implements DTarget {
                     g.chcolor();
                 }
             }
-
+if (Config.markstudied && !hasparent(ui.gui.chrwdg)) {
+                try {
+                    Curiosity curiosity = ItemInfo.find(Curiosity.class, item.info());
+                    if (curiosity != null) {
+                        CharWnd.StudyInfo study = ui.gui.chrwdg.inf;
+                        ItemInfo.Name nm = ItemInfo.find(ItemInfo.Name.class, item.info());
+                    if (nm != null && study.active.contains(nm.str.text)) {
+                        g.aimage(studyMarkGreen, sz.div(2), 0.5, 0.5);
+                   } else if (curiosity.mw + study.tw > ui.sess.glob.cattr.get("int").comp) {
+                       g.aimage(studyMarkRed, sz.div(2), 0.5, 0.5);
+                }
+                }
+                } catch (Loading ignored) {
+                }
+            }
             GItem.Quality quality = item.quality();
             if (Config.showquality) {
                 if (quality != null && quality.max != 0) {
@@ -325,6 +342,8 @@ public class WItem extends Widget implements DTarget {
                 } catch (Exception e) { // fail silently if info is not ready
                 }
             }
+
+            
         } else {
             g.image(missing.layer(Resource.imgc).tex(), Coord.z, sz);
         }
